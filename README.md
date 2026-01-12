@@ -15,6 +15,7 @@ A production-grade, containerized Semantic Search API built with FastAPI, Pineco
 
 - Python 3.9
 - FastAPI - Modern web framework for building APIs
+- Streamlit - Interactive web frontend
 - Pinecone (Serverless) - Managed vector database
 - Sentence Transformers - Semantic embeddings (all-MiniLM-L6-v2)
 - Docker - Containerization
@@ -116,6 +117,39 @@ docker run -p 8000:8000 --env-file .env neuralquery:latest
 ```
 
 The API will be available at `http://localhost:8000`
+
+### Step 3: Run the Frontend (Optional)
+
+After the API is running, you can launch the Streamlit frontend for a user-friendly interface:
+
+```bash
+streamlit run frontend.py
+```
+
+The frontend will be available at `http://localhost:8501` and will automatically connect to the API running on port 8000.
+
+## Quick Start (Frontend)
+
+To quickly get started with the interactive frontend:
+
+1. Make sure the API is running (see Step 2 above)
+2. Install dependencies (if you haven't already):
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Launch the Streamlit frontend:
+   ```bash
+   streamlit run frontend.py
+   ```
+4. Open your browser to `http://localhost:8501`
+5. Enter a search query and click "Search"
+
+The frontend provides:
+- Real-time API health status
+- Interactive search interface
+- Expandable result cards with similarity scores
+- Category filtering and metadata display
+- Error handling with helpful troubleshooting messages
 
 ## API Documentation
 
@@ -289,6 +323,7 @@ NeuralQuery/
 ├── requirements.txt        # Python dependencies
 ├── Dockerfile             # Production Docker configuration
 ├── README.md              # This file
+├── frontend.py            # Streamlit frontend interface
 └── app/
     ├── __init__.py        # Package init (optional)
     ├── indexer.py         # Data ingestion script
@@ -296,6 +331,19 @@ NeuralQuery/
 ```
 
 ## Architecture
+
+### System Architecture Diagram
+
+```mermaid
+graph LR
+    A[User] -->|Technical Query| B[Streamlit Frontend]
+    B -->|JSON Request| C[Docker Container<br/>FastAPI on Port 8000]
+    C -->|Query Text| D[Embedding Model<br/>MiniLM-L6-v2]
+    D -->|Vector Embeddings<br/>384 dimensions| E[Vector DB<br/>Pinecone Serverless]
+    E -->|Top-k Retrieval| C
+    C -->|JSON Response<br/>Results + Metadata| B
+    B -->|Display Results| A
+```
 
 ### Indexer (app/indexer.py)
 
@@ -314,6 +362,14 @@ The API provides the search interface:
   - PineconeException returns 503 Service Unavailable
   - General exceptions return 500 Internal Server Error
 - Type safety through Pydantic models for request/response validation
+
+### Frontend (frontend.py)
+
+The Streamlit frontend provides a user-friendly interface:
+- Clean, modern chat interface for search queries
+- Real-time API health monitoring
+- Expandable result cards with similarity scores and metadata
+- Graceful error handling with helpful messages
 
 ## Error Handling
 

@@ -121,12 +121,12 @@ app = FastAPI(
 
 
 @app.get("/health", status_code=status.HTTP_200_OK)
-async def health_check() -> Dict[str, str]:
+async def health_check() -> Dict[str, Any]:
     """
     Health check endpoint that verifies Pinecone connection is active.
     
     Returns:
-        Dict[str, str]: Health status
+        Dict[str, Any]: Health status
     """
     global pc, index
     
