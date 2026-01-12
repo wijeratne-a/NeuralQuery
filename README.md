@@ -426,20 +426,6 @@ Or use a different port:
 uvicorn app.main:app --host 0.0.0.0 --port 8001
 ```
 
-## Production Considerations
-
-For production deployments, consider the following:
-
-- Environment Variables: Use a secrets management service like AWS Secrets Manager
-- Monitoring: Add logging and metrics with tools like Prometheus or DataDog
-- Rate Limiting: Add rate limits if exposing the API publicly
-- Authentication: Add API keys or OAuth for production use
-- HTTPS: Use a reverse proxy like nginx with SSL certificates
-- Scaling: Use container orchestration like Kubernetes or ECS for horizontal scaling
-
-## License
-
-[Add your license here]
 
 ## Contributing
 
